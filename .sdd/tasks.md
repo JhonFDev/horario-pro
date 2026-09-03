@@ -1,0 +1,28 @@
+# Horario de Estudio Profesional — Plan de Tareas (`sdd-tasks`)
+
+- [x] **Tarea 1:** Definir estructura y variables CSS para diseño responsivo, tokens de color, badges y modo oscuro.
+- [x] **Tarea 2:** Implementar Helpers del DOM (`qs`, `qsa`), generadores de IDs, utilidades de fecha y sistema de Toast.
+- [x] **Tarea 3:** Estructurar el catálogo inicial de 5 cursos y la plantilla horaria de lunes a domingo.
+- [x] **Tarea 4:** Implementar el Store de datos, persistencia en `localStorage` y motor de migración de esquemas legados.
+- [x] **Tarea 5:** Construir el HTML semántico con navegación, sidebar, contenedores de las 5 vistas y modales.
+- [x] **Tarea 6:** Implementar la Vista Semanal (grilla interactiva, navegación de fechas, badges, toggle de estado y menú de acciones).
+- [x] **Tarea 7:** Implementar la Vista Diaria (timeline cronológico con diferenciación de estudio, descanso, almuerzo y trabajo).
+- [x] **Tarea 8:** Implementar la Vista de Administración de Cursos y Temas (tarjetas con modo lectura y edición in-place, gestión de temas y eliminación con confirmación).
+- [x] **Tarea 9:** Implementar el Panel de Progreso y Métricas (cálculo de horas efectivas y sesiones completadas filtrando solo `type: 'study'`).
+- [x] **Tarea 10:** Implementar el Panel Principal / Dashboard con resumen ejecutivo y accesos rápidos.
+- [x] **Tarea 11:** Implementar el Formulario Modal de Bloques con validaciones de hora, tema y sincronización de `courseId`/`category`.
+- [x] **Tarea 12:** Implementar Importación y Exportación JSON con validación estricta y restablecimiento de fábrica.
+- [x] **Tarea 13:** Implementar estilos `@media print` para exportación a PDF limpia.
+- [x] **Tarea 14:** Integrar catálogo y métricas de trabajo en Dashboard/Progreso, filtros contextuales y purga segura (v3.0.0).
+- [x] **Tarea 15:** Refinar UI del sidebar (desduplicación y reubicación de badges al pie), traducir prioridades de bloques a español y corregir orientación de tooltips hacia abajo (v3.1.0).
+- [x] **Tarea 16:** Implementar botón "Eliminar bloque" en el modal de edición (visible solo en modo edición), con confirmación previa (v4.0.0).
+- [x] **Tarea 17:** Implementar validación de solapamiento de horarios en `saveBlock()` con detección de conflictos por fecha e intervalo; 11 tests unitarios — 11/11 OK (v4.0.0).
+- [x] **Tarea 18:** Implementar navegación por doble clic en la vista semanal hacia el Horario Diario del día seleccionado (v4.0.0).
+- [x] **Tarea 19:** Corregir impresión/PDF para imprimir la vista activa en lugar de forzar siempre la vista semanal (v4.0.0).
+- [x] **Tarea 20:** Reubicar botón Modo Claro/Oscuro al encabezado superior y botón Imprimir/PDF al pie del sidebar; actualizar badge de versión a v4.0.0 (v4.0.0).
+- [x] **Tarea 21:** Definir tokens CSS y badge de tipo para la categoría social (`--type-social-bg`, `.badge-type-social`) en modo oscuro y claro (v5.0.0).
+- [x] **Tarea 22:** Agregar ítem "Temas sociales" en el sidebar, sección `#view-social`, botón `#btn-new-social` y contenedor `#social-grid-container` (v5.0.0).
+- [x] **Tarea 23:** Agregar métricas sociales en Dashboard (`#dash-social-*`, `#dash-social-breakdown`) y en Vista de Progreso (`#prog-social-*`, `#progress-social-table-body`) (v5.0.0).
+- [x] **Tarea 24:** Crear `INITIAL_SOCIAL_CATALOG`, propiedades de store (`socialCatalog`, `editingSocialId`, `tempSocialState`) y métodos CRUD (`addSocialCategory`, `saveSocialCategoryEdit`, `deleteSocialCategory`) (v5.0.0).
+- [x] **Tarea 25:** Agregar el tipo `social` al formulario de bloques: opción en selector, ramas `else if (scope === 'social')` en la cascada y en `updateTopicDropdown`, y optgroup social en `renderFilters` (v5.0.0).
+- [x] **Tarea 26:** Manejar `b.type === 'social'` en `saveBlock`, métricas de Dashboard, Progreso, `typeLabels`, `renderAll`, `titlesMap`, migración, import/export/reset y badge de versión a v5.0.0 (v5.0.0).
