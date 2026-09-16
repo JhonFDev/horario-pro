@@ -2134,7 +2134,32 @@
     /* ==========================================================================
        8. IMPRESIÓN, TEMA OSCURO, BACKUP Y RESTABLECIMIENTO
        ========================================================================== */
-    qs('#btn-print-week').addEventListener('click', () => {
+    // Toggle del menu desplegable de Configuracion
+const settingsWrapper = document.querySelector('.settings-wrapper');
+const settingsDropdown = qs('#settings-dropdown');
+const settingsToggle = qs('#btn-settings-toggle');
+
+const toggleSettingsDropdown = (e) => {
+  e.stopPropagation();
+  settingsWrapper.classList.toggle('active');
+};
+
+const closeSettingsDropdown = () => {
+  if (settingsWrapper) settingsWrapper.classList.remove('active');
+};
+
+if (settingsToggle) {
+  settingsToggle.addEventListener('click', toggleSettingsDropdown);
+}
+
+// Cerrar dropdown al hacer clic fuera
+document.addEventListener('click', (e) => {
+  if (settingsWrapper && !settingsWrapper.contains(e.target)) {
+    closeSettingsDropdown();
+  }
+});
+
+qs('#btn-print-week').addEventListener('click', () => {
       renderAll();
       setTimeout(() => {
         window.print();

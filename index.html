@@ -52,22 +52,31 @@
     </nav>
 
     <div class="sidebar-footer">
-      <button class="btn-secondary-action" id="btn-print-week" title="Imprimir vista actual o guardar como PDF">
-        <span class="nav-icon">🖨️</span>
-        <span>Imprimir / PDF</span>
-      </button>
-      <button class="btn-secondary-action" id="btn-backup-open">
-        <span class="nav-icon">💾</span>
-        <span>Importar / Exportar</span>
-      </button>
-      <button class="btn-secondary-action" id="btn-reset-open">
-        <span class="nav-icon">🔄</span>
-        <span>Restablecer horario</span>
-      </button>
-      <button class="btn-secondary-action" id="btn-purge-open" style="color: var(--danger);">
-        <span class="nav-icon">🗑️</span>
-        <span>Borrar todo</span>
-      </button>
+      <div class="settings-wrapper">
+        <button class="btn-secondary-action" id="btn-settings-toggle">
+          <span class="nav-icon">&#x2699;&#xFE0F;</span>
+          <span>Configuraci&#xF3;n</span>
+          <span class="dropdown-arrow" id="settings-arrow">&#x25BE;</span>
+        </button>
+        <div class="settings-dropdown" id="settings-dropdown">
+          <button class="settings-item" id="btn-print-week" title="Imprimir vista actual o guardar como PDF">
+            <span>&#x1F5A8;&#xFE0F;</span>
+            <span>Imprimir / PDF</span>
+          </button>
+          <button class="settings-item" id="btn-backup-open">
+            <span>&#x1F4BE;</span>
+            <span>Importar / Exportar</span>
+          </button>
+          <button class="settings-item" id="btn-reset-open">
+            <span>&#x1F504;</span>
+            <span>Restablecer horario</span>
+          </button>
+          <button class="settings-item" id="btn-purge-open" style="color: var(--danger);">
+            <span>&#x1F5D1;&#xFE0F;</span>
+            <span>Borrar todo</span>
+          </button>
+        </div>
+      </div>
       <div class="sidebar-credit">
         <div class="brand-badge-row" style="margin-top: 0; justify-content: center;">
           <span class="version-badge">v5.0.0</span>
