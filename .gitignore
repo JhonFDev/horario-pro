@@ -12,3 +12,7 @@ $RECYCLE.BIN/
 # Logs y temporales
 *.log
 node_modules/
+# Herramientas locales
+.atl/
+.pi/
+openspec/
