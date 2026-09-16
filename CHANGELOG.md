@@ -2,6 +2,12 @@
 
 Todas las versiones notables de este proyecto se documentan en este archivo.
 
+## [v5.1.1] — 2026-09-16
+
+### Corrección
+
+- **Colapso de secciones de métricas**: Las flechas de colapso ahora están en el encabezado de cada sección (`📚 Métricas de Estudio`, `💼 Métricas de Trabajo`, `🤝 Métricas de Temas Sociales`) y colapsan las 4 cards de esa sección de forma independiente. Corrige el comportamiento introducido en v5.1.0 donde las flechas estaban dentro de cada card individual.
+
 ## [v5.1.0] — 2025-09-15
 
 ### Nueva característica
