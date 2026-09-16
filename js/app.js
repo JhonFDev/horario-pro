@@ -2285,3 +2285,18 @@ qs('#btn-print-week').addEventListener('click', () => {
       initTheme();
       switchView(appStore.activeView || 'dashboard');
     });
+
+/* ==========================================================================
+
+/* ==========================================================================
+   Collapsible metrics sections
+   ========================================================================== */
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.section-divider-title').forEach(title => {
+    title.style.cursor = 'pointer';
+    title.addEventListener('click', () => {
+      const section = title.parentElement; // .metrics-section
+      section.classList.toggle('collapsed');
+    });
+  });
+});
