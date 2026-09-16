@@ -2287,16 +2287,16 @@ qs('#btn-print-week').addEventListener('click', () => {
     });
 
 /* ==========================================================================
-   Collapsible metrics in dashboard
+
+/* ==========================================================================
+   Collapsible metrics sections
    ========================================================================== */
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.stat-card').forEach(card => {
-    const title = card.querySelector('.stat-title');
-    if (title) {
-      title.style.cursor = 'pointer';
-      title.addEventListener('click', () => {
-        card.classList.toggle('collapsed');
-      });
-    }
+  document.querySelectorAll('.section-divider-title').forEach(title => {
+    title.style.cursor = 'pointer';
+    title.addEventListener('click', () => {
+      const section = title.parentElement; // .metrics-section
+      section.classList.toggle('collapsed');
+    });
   });
 });
