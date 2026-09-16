@@ -2285,3 +2285,18 @@ qs('#btn-print-week').addEventListener('click', () => {
       initTheme();
       switchView(appStore.activeView || 'dashboard');
     });
+
+/* ==========================================================================
+   Collapsible metrics in dashboard
+   ========================================================================== */
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.stat-card').forEach(card => {
+    const title = card.querySelector('.stat-title');
+    if (title) {
+      title.style.cursor = 'pointer';
+      title.addEventListener('click', () => {
+        card.classList.toggle('collapsed');
+      });
+    }
+  });
+});

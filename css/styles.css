@@ -1440,3 +1440,22 @@
         color: #000 !important;
       }
     }
+/* Collapsible metrics */
+.stat-card .toggle-arrow {
+  margin-right: 0.5rem;
+  font-size: 0.9rem;
+  user-select: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.stat-card.collapsed .toggle-arrow {
+  transform: rotate(-90deg);
+}
+.stat-card .stat-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.stat-card.collapsed .stat-content {
+  display: none;
+}
