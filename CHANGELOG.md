@@ -2,6 +2,12 @@
 
 Todas las versiones notables de este proyecto se documentan en este archivo.
 
+## [v5.1.2] — 2026-09-17
+
+### Corrección
+
+- **Altura independiente de categorías en vistas de catálogo**: Se corrige el estiramiento conjunto de tarjetas en las vistas de Temas de Estudio, Trabajo y Social. Ahora cada categoría mantiene su altura según su propio contenido gracias a `align-items: start` y `grid-auto-rows: min-content` en `.courses-grid`.
+
 ## [v5.1.1] — 2026-09-16
 
 ### Corrección
