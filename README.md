@@ -22,16 +22,6 @@ Aplicación web **100% offline** para administrar tu jornada de estudio, trabajo
 
 ---
 
-## 🚀 Cómo usarla (en línea)
-
-Accede desde cualquier dispositivo sin instalar nada:
-
-**[→ Abrir Horario Profesional](https://jhonfdev.github.io/horario-pro/)**
-
-> 💡 **Nota de privacidad:** tus datos se guardan en el navegador del dispositivo que uses (`localStorage`). Si abres la app en otro dispositivo, verás un horario vacío, separado del tuyo. Nada se sube a ningún servidor.
-
----
-
 ## 🖥️ Cómo usarla (local)
 
 ### Opción A — Directo (sin instalar nada)
@@ -52,6 +42,8 @@ npx serve .
 ```
 
 Luego abre `http://localhost:8000` en tu navegador.
+
+> 💡 **Privacidad:** todos los datos se guardan en `localStorage` de tu navegador. La app funciona 100% offline y nada se envía a servidores externos.
 
 ---
 
