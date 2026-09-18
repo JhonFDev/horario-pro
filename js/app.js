@@ -21,6 +21,7 @@
       {
         id: 'course-simo-1',
         title: 'Concurso SIMO número 1',
+        completed: false,
         topics: [
           'Manual de funciones.',
           'Competencias funcionales.',
@@ -33,6 +34,7 @@
       {
         id: 'course-simo-2',
         title: 'Concurso SIMO número 2',
+        completed: false,
         topics: [
           'Manual de funciones.',
           'Competencias funcionales.',
@@ -45,6 +47,7 @@
       {
         id: 'course-mga-dnp',
         title: 'MGA del DNP',
+        completed: false,
         topics: [
           'Metodología General Ajustada — MGA del DNP.'
         ]
@@ -52,6 +55,7 @@
       {
         id: 'course-ai-gen',
         title: 'Inteligencia artificial generativa',
+        completed: false,
         topics: [
           'Ecosistema de inteligencia artificial generativa.'
         ]
@@ -59,6 +63,7 @@
       {
         id: 'course-otros',
         title: 'Otros temas de estudio',
+        completed: false,
         topics: []
       }
     ];
@@ -68,6 +73,7 @@
       {
         id: 'work-proy-1',
         title: 'Proyectos y Desarrollo',
+        completed: false,
         topics: [
           'Análisis y levantamiento de requerimientos.',
           'Diseño de arquitectura y prototipado.',
@@ -78,6 +84,7 @@
       {
         id: 'work-ops-1',
         title: 'Gestión y Operaciones',
+        completed: false,
         topics: [
           'Reuniones de sincronización con el equipo.',
           'Atención de incidencias y soporte.',
@@ -91,6 +98,7 @@
       {
         id: 'social-fam-1',
         title: 'Familia y Vida Personal',
+        completed: false,
         topics: [
           'Tiempo de calidad con la familia.',
           'Trámites y gestiones personales.',
@@ -100,6 +108,7 @@
       {
         id: 'social-am-1',
         title: 'Amistades y Vida Social',
+        completed: false,
         topics: [
           'Reuniones y encuentros con amigos.',
           'Salidas y actividades recreativas.',
@@ -323,6 +332,11 @@
           this.socialCatalog = JSON.parse(JSON.stringify(INITIAL_SOCIAL_CATALOG));
         }
 
+        // Normalizar propiedad completed
+        this.catalog = this.catalog.map(c => ({...c, completed: !!c.completed}));
+        this.workCatalog = this.workCatalog.map(w => ({...w, completed: !!w.completed}));
+        this.socialCatalog = this.socialCatalog.map(s => ({...s, completed: !!s.completed}));
+
         // Migración de bloques
         if (Array.isArray(data.blocks)) {
           this.blocks = data.blocks.map(b => {
@@ -388,6 +402,7 @@
         const newCourse = {
           id: generateId('course'),
           title: title,
+          completed: false,
           topics: ['Nuevo tema de estudio']
         };
 
@@ -420,6 +435,9 @@
         const oldTitle = course.title;
         course.title = trimmedTitle;
         course.topics = cleanTopics;
+        if (this.tempCourseState && typeof this.tempCourseState.completed === 'boolean') {
+          course.completed = this.tempCourseState.completed;
+        }
 
         if (oldTitle !== trimmedTitle) {
           this.blocks.forEach(b => {
@@ -463,6 +481,7 @@
         const newWork = {
           id: generateId('work'),
           title: title,
+          completed: false,
           topics: ['Nueva tarea / actividad']
         };
 
@@ -495,6 +514,9 @@
         const oldTitle = workCat.title;
         workCat.title = trimmedTitle;
         workCat.topics = cleanTopics;
+        if (this.tempWorkState && typeof this.tempWorkState.completed === 'boolean') {
+          workCat.completed = this.tempWorkState.completed;
+        }
 
         if (oldTitle !== trimmedTitle) {
           this.blocks.forEach(b => {
@@ -538,6 +560,7 @@
         const newSocial = {
           id: generateId('social'),
           title: title,
+          completed: false,
           topics: ['Nueva actividad']
         };
 
@@ -570,6 +593,9 @@
         const oldTitle = socialCat.title;
         socialCat.title = trimmedTitle;
         socialCat.topics = cleanTopics;
+        if (this.tempSocialState && typeof this.tempSocialState.completed === 'boolean') {
+          socialCat.completed = this.tempSocialState.completed;
+        }
 
         if (oldTitle !== trimmedTitle) {
           this.blocks.forEach(b => {
@@ -1042,7 +1068,7 @@
       qs('#dash-hours-val').textContent = `${(weekStudyMinutes / 60).toFixed(1)} h`;
       qs('#dash-progress-val').textContent = `${progressPercent}%`;
       qs('#dash-progress-desc').textContent = `${completedStudy.length} de ${totalStudy} sesiones completadas`;
-      qs('#dash-courses-val').textContent = appStore.catalog.length;
+      qs('#dash-courses-val').textContent = appStore.catalog.filter(c => !c.completed).length;
 
       // Métricas de Trabajo
       const workBlocks = appStore.blocks.filter(b => b.type === 'work');
@@ -1064,7 +1090,7 @@
       qs('#dash-work-progress-desc').textContent = `${completedWork.length} de ${totalWork} sesiones completadas`;
       qs('#dash-work-today-val').textContent = todayWorkBlocks.length;
       qs('#dash-work-today-pending').textContent = `${todayWorkPending} pendientes`;
-      qs('#dash-work-val').textContent = appStore.workCatalog.length;
+      qs('#dash-work-val').textContent = appStore.workCatalog.filter(w => !w.completed).length;
 
       // Métricas de Temas Sociales
       const socialBlocks = appStore.blocks.filter(b => b.type === 'social');
@@ -1080,7 +1106,7 @@
       qs('#dash-social-progress-desc').textContent = `${completedSocial.length} de ${totalSocial} sesiones completadas`;
       qs('#dash-social-today-val').textContent = todaySocialBlocks.length;
       qs('#dash-social-today-pending').textContent = `${todaySocialPending} pendientes`;
-      qs('#dash-social-val').textContent = appStore.socialCatalog.length;
+      qs('#dash-social-val').textContent = appStore.socialCatalog.filter(s => !s.completed).length;
 
       // Sesiones Programadas para Hoy
       const todayBlocks = appStore.blocks.filter(b => b.date === todayStr);
@@ -1261,6 +1287,10 @@
                   <input type="text" id="edit-course-title" value="${temp.title}" required autofocus>
                 </div>
 
+                <div class="form-group" style="margin-top:0.5rem;">
+                  <label><input type="checkbox" id="edit-course-completed" ${temp.completed ? 'checked' : ''}> Marcar como completado</label>
+                </div>
+
                 <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">Temas de estudio:</label>
                 <div id="edit-topics-container" style="display: flex; flex-direction: column; gap: 0.4rem;">
                   ${temp.topics.map((t, idx) => `
@@ -1286,7 +1316,7 @@
         }
 
         return `
-          <div class="course-card" data-course-id="${course.id}" style="border-top: 4px solid ${color.bg};">
+          <div class="course-card" data-course-id="${course.id}" style="border-top: 4px solid ${color.bg}; ${course.completed ? 'opacity:0.6;' : ''}">
             <div class="course-card-header">
               <h3 class="course-card-title">${course.title}</h3>
               <button class="btn-icon btn-edit-course" data-course-id="${course.id}" title="Editar curso">⋮</button>
@@ -1340,6 +1370,10 @@
                   <input type="text" id="edit-work-title" value="${temp.title}" required autofocus>
                 </div>
 
+                <div class="form-group" style="margin-top:0.5rem;">
+                  <label><input type="checkbox" id="edit-work-completed" ${temp.completed ? 'checked' : ''}> Marcar como completado</label>
+                </div>
+
                 <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">Tareas y temas de trabajo:</label>
                 <div id="edit-work-topics-container" style="display: flex; flex-direction: column; gap: 0.4rem;">
                   ${temp.topics.map((t, idx) => `
@@ -1365,7 +1399,7 @@
         }
 
         return `
-          <div class="course-card" data-work-id="${work.id}" style="border-top: 4px solid ${color.bg};">
+          <div class="course-card" data-work-id="${work.id}" style="border-top: 4px solid ${color.bg}; ${work.completed ? 'opacity:0.6;' : ''}">
             <div class="course-card-header">
               <h3 class="course-card-title">${work.title}</h3>
               <button class="btn-icon btn-edit-work" data-work-id="${work.id}" title="Editar categoría">⋮</button>
@@ -1419,6 +1453,10 @@
                   <input type="text" id="edit-social-title" value="${temp.title}" required autofocus>
                 </div>
 
+                <div class="form-group" style="margin-top:0.5rem;">
+                  <label><input type="checkbox" id="edit-social-completed" ${temp.completed ? 'checked' : ''}> Marcar como completado</label>
+                </div>
+
                 <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">Actividades y temas sociales:</label>
                 <div id="edit-social-topics-container" style="display: flex; flex-direction: column; gap: 0.4rem;">
                   ${temp.topics.map((t, idx) => `
@@ -1444,7 +1482,7 @@
         }
 
         return `
-          <div class="course-card" data-social-id="${social.id}" style="border-top: 4px solid ${color.bg};">
+          <div class="course-card" data-social-id="${social.id}" style="border-top: 4px solid ${color.bg}; ${social.completed ? 'opacity:0.6;' : ''}">
             <div class="course-card-header">
               <h3 class="course-card-title">${social.title}</h3>
               <button class="btn-icon btn-edit-social" data-social-id="${social.id}" title="Editar categoría">⋮</button>
@@ -1965,6 +2003,9 @@
       const titleInput = qs('#edit-course-title');
       if (titleInput) appStore.tempCourseState.title = titleInput.value;
 
+      const completedInput = qs('#edit-course-completed');
+      if (completedInput) appStore.tempCourseState.completed = completedInput.checked;
+
       const topicInputs = qsa('.edit-topic-input');
       appStore.tempCourseState.topics = topicInputs.map(input => input.value);
     };
@@ -2046,6 +2087,9 @@
       const titleInput = qs('#edit-work-title');
       if (titleInput) appStore.tempWorkState.title = titleInput.value;
 
+      const completedInput = qs('#edit-work-completed');
+      if (completedInput) appStore.tempWorkState.completed = completedInput.checked;
+
       const topicInputs = qsa('.edit-work-topic-input');
       appStore.tempWorkState.topics = topicInputs.map(input => input.value);
     };
@@ -2126,6 +2170,9 @@
       if (!appStore.tempSocialState) return;
       const titleInput = qs('#edit-social-title');
       if (titleInput) appStore.tempSocialState.title = titleInput.value;
+
+      const completedInput = qs('#edit-social-completed');
+      if (completedInput) appStore.tempSocialState.completed = completedInput.checked;
 
       const topicInputs = qsa('.edit-social-topic-input');
       appStore.tempSocialState.topics = topicInputs.map(input => input.value);
