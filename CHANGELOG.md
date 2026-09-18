@@ -2,6 +2,16 @@
 
 Todas las versiones notables de este proyecto se documentan en este archivo.
 
+## [v5.2.0] — 2026-09-17
+
+### Nueva característica
+
+- **Marca de completado para categorías y filtrado de activos en Dashboard**: Se agrega propiedad `completed` a cursos, trabajos y sociales.
+  - Checkbox "Marcar como completado" en el formulario de edición de cada categoría.
+  - Los contadores de Cursos Activos, Trabajos Activos y Temas Sociales Activos en el Dashboard muestran solo ítems con `completed === false`.
+  - Persistencia en localStorage con normalización para datos antiguos.
+  - Indicador visual de opacidad en tarjetas completadas.
+
 ## [v5.1.2] — 2026-09-17
 
 ### Corrección
