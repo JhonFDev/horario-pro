@@ -373,7 +373,6 @@
   text-align: left;
   transition: background-color 0.15s ease;
 }
-
 .settings-item:hover {
   background-color: var(--bg-card);
 }
@@ -382,6 +381,63 @@
   font-size: 1rem;
   width: 20px;
   text-align: center;
+}
+
+/* Cloud Sync Section in Settings Dropdown */
+.settings-section {
+  padding: 0.25rem 0;
+}
+
+.settings-section-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0.25rem 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.settings-divider {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 0.25rem 0;
+}
+
+.cloud-status {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8rem;
+  color: var(--status-completed);
+  background: rgba(16, 185, 129, 0.1);
+  border-radius: var(--radius-sm);
+  margin: 0.25rem 0.5rem;
+}
+
+/* Cloud Token Modal */
+#cloud-token-modal .modal-box {
+  max-width: 520px;
+}
+
+#cloud-token-modal code {
+  background: var(--bg-input);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.85em;
+  color: var(--accent);
+}
+
+#cloud-token-modal a {
+  word-break: break-all;
+}
+
+#cloud-token-modal input[type="password"],
+#cloud-token-modal input[type="text"] {
+  font-family: monospace;
+  letter-spacing: 0.5px;
+}
+
+#cloud-token-hint {
+  font-style: italic;
 }
 
     .sidebar-credit {

@@ -59,6 +59,36 @@
           <span class="dropdown-arrow" id="settings-arrow">&#x25BE;</span>
         </button>
         <div class="settings-dropdown" id="settings-dropdown">
+          <div class="settings-section" id="cloud-sync-section">
+            <div class="settings-section-title">☁️ Sincronización GitHub</div>
+            <div id="cloud-status-disconnected" style="display: none;">
+              <button class="settings-item" id="btn-cloud-connect" title="Conectar con GitHub para sincronizar datos">
+                <span>🔗</span>
+                <span>Conectar mi nube (GitHub)</span>
+              </button>
+            </div>
+            <div id="cloud-status-connected" style="display: none;">
+              <div class="settings-item cloud-status" style="display: flex; align-items: center; justify-content: space-between; cursor: default;">
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                  <span>🟢</span>
+                  <span>Conectado a JhonFDev/horario-pro-data</span>
+                </span>
+              </div>
+              <button class="settings-item" id="btn-cloud-download" title="Descargar datos desde GitHub">
+                <span>⬇️</span>
+                <span>Bajar de la nube</span>
+              </button>
+              <button class="settings-item" id="btn-cloud-upload" title="Subir datos a GitHub">
+                <span>☁️</span>
+                <span>Subir a la nube</span>
+              </button>
+              <button class="settings-item" id="btn-cloud-disconnect" style="color: var(--danger);" title="Desconectar y borrar token local">
+                <span>🔓</span>
+                <span>Desconectar nube</span>
+              </button>
+            </div>
+          </div>
+          <hr class="settings-divider">
           <button class="settings-item" id="btn-print-week" title="Imprimir vista actual o guardar como PDF">
             <span>&#x1F5A8;&#xFE0F;</span>
             <span>Imprimir / PDF</span>
@@ -540,6 +570,45 @@
   </div>
 
   <!-- ==========================================================================
+       MODAL DE TOKEN GITHUB (CLOUD SYNC)
+       ========================================================================== -->
+  <div class="modal-overlay" id="cloud-token-modal">
+    <div class="modal-box" style="max-width: 520px;">
+      <div class="modal-header">
+        <h3 class="modal-title">🔗 Conectar con GitHub (Cloud Sync)</h3>
+        <button class="btn-icon" id="btn-close-cloud-token-modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">
+          Para sincronizar tus datos en la nube, necesitás un <strong>Personal Access Token (classic)</strong> de GitHub con scope <code>repo</code>.
+        </p>
+        <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.8rem; color: var(--text-secondary); line-height: 1.6;">
+          <strong>Cómo crearlo:</strong><br>
+          1. <a href="https://github.com/settings/tokens/new" target="_blank" rel="noopener" style="color: var(--accent);">Settings → Developer settings → Personal access tokens → Tokens (classic)</a><br>
+          2. <strong>Generate new token (classic)</strong><br>
+          3. Nombre: "horario-pro cloud sync"<br>
+          4. Expiración: 90 días (o la que prefieras)<br>
+          5. Scopes: marcar <strong>repo</strong> (Full control of private repositories)<br>
+          6. Generate token → <strong>Copialo ya</strong> (solo se ve una vez)
+        </div>
+        <p style="font-size: 0.8rem; color: var(--danger); margin-bottom: 1rem;">
+          ⚠️ Este token da acceso a tus repos privados. Se guarda <strong>solo en el localStorage de ESTE navegador</strong>. No se sube a GitHub ni sale de tu dispositivo.
+        </p>
+        <div class="form-group">
+          <label for="cloud-token-input">Pegá tu token aquí:</label>
+          <input type="password" id="cloud-token-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" style="font-family: monospace;">
+          <button type="button" class="btn-outline" id="btn-toggle-token-visibility" style="margin-top: 0.5rem;">👁️ Mostrar / Ocultar</button>
+        </div>
+        <p id="cloud-token-hint" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; display: none;">Token guardado localmente ✓</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-outline" id="btn-cancel-cloud-token">Cancelar</button>
+        <button type="button" class="btn-primary" id="btn-save-cloud-token">Guardar y conectar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
        MODAL DE FORMULARIO DE BLOQUE (CREAR / EDITAR EN CASCADA)
        ========================================================================== -->
   <div class="modal-overlay" id="block-modal">
@@ -714,6 +783,7 @@
 
   <!-- CONTENEDOR DE TOASTS -->
   <div id="toast-container"></div>
+  <script src="js/config.js"></script>
   <script src="js/app.js"></script>
 </body>
 

@@ -16,6 +16,21 @@
       { bg: 'var(--cat-color-6)', label: '#6366f1' }
     ];
 
+    /* Cloud Sync Configuration (GitHub as DB) */
+    const CLOUD_TOKEN_KEY = 'horario_pro_github_token';
+    const CLOUD_LAST_SYNC_KEY = 'horario_pro_last_sync';
+    const CLOUD_CONFIG = window.CLOUD_CONFIG || {
+      owner: 'JhonFDev',
+      repo: 'horario-pro-data',
+      filePath: 'horario.json',
+      apiBase: 'https://api.github.com/repos',
+      tokenStorageKey: CLOUD_TOKEN_KEY,
+      lastSyncStorageKey: CLOUD_LAST_SYNC_KEY,
+      getFileUrl() { return `${this.apiBase}/${this.owner}/${this.repo}/contents/${this.filePath}`; },
+      getHeaders(token) { return { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }; },
+      getHeadersNoAuth() { return { 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }; }
+    };
+
     /* Catálogo inicial estricto de Estudio */
     const INITIAL_CATALOG = [
       {
@@ -387,6 +402,154 @@
           blocks: this.blocks
         };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      }
+
+      /* Cloud Sync Methods (GitHub as DB) */
+      getCloudToken() {
+        let token = localStorage.getItem(CLOUD_TOKEN_KEY);
+        if (!token) {
+          token = prompt(`🔐 Ingresá tu GitHub Personal Access Token (scope: repo)
+
+Se guarda en localStorage de este navegador.
+Nadie más lo verá.
+
+Token:`);
+          if (token && token.trim()) {
+            token = token.trim();
+            localStorage.setItem(CLOUD_TOKEN_KEY, token);
+            showToast('✅ Token guardado localmente');
+          } else {
+            showToast('❌ Token requerido para sincronizar', 'error');
+            return null;
+          }
+        }
+        return token;
+      }
+
+      setCloudToken(token) {
+        if (token && token.trim()) {
+          localStorage.setItem(CLOUD_TOKEN_KEY, token.trim());
+          showToast('✅ Token actualizado');
+          return true;
+        }
+        return false;
+      }
+
+      clearCloudToken() {
+        localStorage.removeItem(CLOUD_TOKEN_KEY);
+        localStorage.removeItem(CLOUD_LAST_SYNC_KEY);
+        showToast('🔓 Desconectado de la nube');
+      }
+
+      async loadFromCloud() {
+        const token = this.getCloudToken();
+        if (!token) return false;
+
+        const btn = document.getElementById('btn-cloud-download');
+        const originalText = btn ? btn.innerHTML : '';
+        if (btn) { btn.innerHTML = '⏳ Bajando...'; btn.disabled = true; }
+        showToast('☁️ Conectando con GitHub...');
+
+        try {
+          const url = CLOUD_CONFIG.getFileUrl();
+          const res = await fetch(url, { headers: CLOUD_CONFIG.getHeaders(token) });
+
+          if (res.status === 401 || res.status === 403) {
+            throw new Error('Token inválido o sin permisos (401/403)');
+          }
+          if (res.status === 404) {
+            throw new Error('Archivo horario.json no existe en el repo (404)');
+          }
+          if (!res.ok) {
+            const err = await res.text();
+            throw new Error(`Error ${res.status}: ${err}`);
+          }
+
+          const data = await res.json();
+          const content = atob(data.content.replace(/\s/g, ''));
+          const json = JSON.parse(content);
+
+          this.migrateAndLoad(json);
+          localStorage.setItem(CLOUD_LAST_SYNC_KEY, new Date().toISOString());
+          showToast('✅ Datos bajados de la nube y sincronizados');
+          renderAll();
+          return true;
+        } catch (err) {
+          showToast(`❌ Error bajando de la nube: ${err.message}`, 'error');
+          if (err.message.includes('401') || err.message.includes('403')) {
+            this.clearCloudToken();
+          }
+          return false;
+        } finally {
+          if (btn) { btn.innerHTML = originalText; btn.disabled = false; }
+        }
+      }
+
+      async saveToCloud() {
+        const token = this.getCloudToken();
+        if (!token) return false;
+
+        const btn = document.getElementById('btn-cloud-upload');
+        const originalText = btn ? btn.innerHTML : '';
+        if (btn) { btn.innerHTML = '⏳ Subiendo...'; btn.disabled = true; }
+        showToast('☁️ Subiendo a GitHub...');
+
+        try {
+          const payload = {
+            version: 2,
+            catalog: this.catalog,
+            workCatalog: this.workCatalog,
+            socialCatalog: this.socialCatalog,
+            blocks: this.blocks
+          };
+          const contentB64 = btoa(JSON.stringify(payload, null, 2));
+          const url = CLOUD_CONFIG.getFileUrl();
+
+          let sha = null;
+          const getRes = await fetch(url, { headers: CLOUD_CONFIG.getHeaders(token) });
+          if (getRes.ok) {
+            const fileData = await getRes.json();
+            sha = fileData.sha;
+          } else if (getRes.status !== 404) {
+            const err = await getRes.text();
+            throw new Error(`Error leyendo archivo: ${getRes.status} ${err}`);
+          }
+
+          const putBody = {
+            message: `feat: sync horario from app ${new Date().toISOString()}`,
+            content: contentB64,
+            ...(sha && { sha })
+          };
+
+          const putRes = await fetch(url, {
+            method: 'PUT',
+            headers: CLOUD_CONFIG.getHeaders(token),
+            body: JSON.stringify(putBody)
+          });
+
+          if (putRes.status === 409) {
+            throw new Error('Conflicto: el archivo cambió en otro dispositivo. Bajá primero y volvé a subir.');
+          }
+          if (putRes.status === 401 || putRes.status === 403) {
+            throw new Error('Token inválido o sin permisos (401/403)');
+          }
+          if (!putRes.ok) {
+            const err = await putRes.text();
+            throw new Error(`Error subiendo: ${putRes.status} ${err}`);
+          }
+
+          localStorage.setItem(CLOUD_LAST_SYNC_KEY, new Date().toISOString());
+          showToast('✅ Datos subidos a la nube (commit creado)');
+          return true;
+        } catch (err) {
+          showToast(`❌ Error subiendo a la nube: ${err.message}`, 'error');
+          if (err.message.includes('401') || err.message.includes('403')) {
+            this.clearCloudToken();
+          }
+          return false;
+        } finally {
+          if (btn) { btn.innerHTML = originalText; btn.disabled = false; }
+        }
       }
 
       /* Mutaciones de Cursos de Estudio */
@@ -2238,7 +2401,78 @@ document.addEventListener('click', (e) => {
   }
 });
 
-qs('#btn-print-week').addEventListener('click', () => {
+  /* Cloud Sync UI Logic */
+  const cloudTokenModal = qs('#cloud-token-modal');
+  const cloudTokenInput = qs('#cloud-token-input');
+  const btnToggleTokenVisibility = qs('#btn-toggle-token-visibility');
+  const btnSaveCloudToken = qs('#btn-save-cloud-token');
+  const btnCancelCloudToken = qs('#btn-cancel-cloud-token');
+  const btnCloseCloudTokenModal = qs('#btn-close-cloud-token-modal');
+  const cloudTokenHint = qs('#cloud-token-hint');
+
+  const openCloudTokenModal = () => {
+    cloudTokenInput.value = '';
+    cloudTokenInput.type = 'password';
+    cloudTokenHint.style.display = 'none';
+    cloudTokenModal.classList.add('active');
+    cloudTokenInput.focus();
+    closeSettingsDropdown();
+  };
+
+  const closeCloudTokenModal = () => {
+    cloudTokenModal.classList.remove('active');
+  };
+
+  const updateCloudSyncUI = () => {
+    const hasToken = !!localStorage.getItem(CLOUD_TOKEN_KEY);
+    qs('#cloud-status-disconnected').style.display = hasToken ? 'none' : 'block';
+    qs('#cloud-status-connected').style.display = hasToken ? 'block' : 'none';
+  };
+
+  // Cloud Token Modal events
+  btnToggleTokenVisibility?.addEventListener('click', () => {
+    cloudTokenInput.type = cloudTokenInput.type === 'password' ? 'text' : 'password';
+  });
+
+  btnSaveCloudToken?.addEventListener('click', () => {
+    const token = cloudTokenInput.value.trim();
+    if (!token) {
+      showToast('❌ Token vacío', 'error');
+      return;
+    }
+    if (!token.startsWith('ghp_') && !token.startsWith('github_pat_')) {
+      if (!confirm('El token no parece un PAT clásico de GitHub (debería empezar con ghp_). ¿Continuar de todos modos?')) {
+        return;
+      }
+    }
+    appStore.setCloudToken(token);
+    updateCloudSyncUI();
+    closeCloudTokenModal();
+  });
+
+  btnCancelCloudToken?.addEventListener('click', closeCloudTokenModal);
+  btnCloseCloudTokenModal?.addEventListener('click', closeCloudTokenModal);
+
+  // Cloud Sync Buttons
+  qs('#btn-cloud-connect')?.addEventListener('click', openCloudTokenModal);
+  qs('#btn-cloud-download')?.addEventListener('click', () => {
+    appStore.loadFromCloud();
+    closeSettingsDropdown();
+  });
+  qs('#btn-cloud-upload')?.addEventListener('click', () => {
+    appStore.saveToCloud();
+    closeSettingsDropdown();
+  });
+  qs('#btn-cloud-disconnect')?.addEventListener('click', () => {
+    appStore.clearCloudToken();
+    updateCloudSyncUI();
+    closeSettingsDropdown();
+  });
+
+  // Inicializar UI de cloud sync
+  updateCloudSyncUI();
+
+  qs('#btn-print-week').addEventListener('click', () => {
       renderAll();
       setTimeout(() => {
         window.print();
