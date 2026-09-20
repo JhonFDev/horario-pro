@@ -1108,6 +1108,38 @@
       qs('#dash-social-today-pending').textContent = `${todaySocialPending} pendientes`;
       qs('#dash-social-val').textContent = appStore.socialCatalog.filter(s => !s.completed).length;
 
+      // Auto-colapsar secciones de métricas con 0 pendientes
+      const autoCollapseMetricsSections = () => {
+        // Métricas de Estudio
+        const studyPendingEl = qs('#dash-today-pending');
+        if (studyPendingEl && studyPendingEl.textContent.includes('0 pendientes')) {
+          const studySection = studyPendingEl.closest('.metrics-section');
+          if (studySection && !studySection.classList.contains('collapsed')) {
+            studySection.classList.add('collapsed');
+          }
+        }
+        
+        // Métricas de Trabajo
+        const workPendingEl = qs('#dash-work-today-pending');
+        if (workPendingEl && workPendingEl.textContent.includes('0 pendientes')) {
+          const workSection = workPendingEl.closest('.metrics-section');
+          if (workSection && !workSection.classList.contains('collapsed')) {
+            workSection.classList.add('collapsed');
+          }
+        }
+        
+        // Métricas de Temas Sociales
+        const socialPendingEl = qs('#dash-social-today-pending');
+        if (socialPendingEl && socialPendingEl.textContent.includes('0 pendientes')) {
+          const socialSection = socialPendingEl.closest('.metrics-section');
+          if (socialSection && !socialSection.classList.contains('collapsed')) {
+            socialSection.classList.add('collapsed');
+          }
+        }
+      };
+      
+      autoCollapseMetricsSections();
+
       // Sesiones Programadas para Hoy
       const todayBlocks = appStore.blocks.filter(b => b.date === todayStr);
       const todayContainer = qs('#dash-today-list');
