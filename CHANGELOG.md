@@ -2,6 +2,15 @@
 
 Todas las versiones notables de este proyecto se documentan en este archivo.
 
+## [v5.2.1] — 2026-09-19
+
+### Nueva característica
+
+- **Auto-colapso de secciones de métricas con 0 pendientes**: Al cargar el Dashboard, las secciones "Métricas de Estudio", "Métricas de Trabajo" y "Métricas de Temas Sociales" se colapsan automáticamente cuando sus contadores de sesiones pendientes muestran "0 pendientes".
+  - Se verifica `dash-today-pending` (Sesiones Estudio Hoy), `dash-work-today-pending` (Sesiones Trabajo Hoy) y `dash-social-today-pending` (Sesiones Sociales Hoy).
+  - El usuario puede expandir manualmente las secciones colapsadas haciendo clic en el título.
+  - No afecta otras vistas, solo el Dashboard.
+
 ## [v5.2.0] — 2026-09-17
 
 ### Nueva característica
