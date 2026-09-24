@@ -52,6 +52,31 @@
     </nav>
 
     <div class="sidebar-footer">
+      <div class="settings-wrapper">
+        <button class="btn-secondary-action" id="btn-settings-toggle">
+          <span class="nav-icon">&#x2699;&#xFE0F;</span>
+          <span>Configuraci&#xF3;n</span>
+          <span class="dropdown-arrow" id="settings-arrow">&#x25BE;</span>
+        </button>
+        <div class="settings-dropdown" id="settings-dropdown">
+          <button class="settings-item" id="btn-print-week" title="Imprimir vista actual o guardar como PDF">
+            <span>&#x1F5A8;&#xFE0F;</span>
+            <span>Imprimir / PDF</span>
+          </button>
+          <button class="settings-item" id="btn-backup-open">
+            <span>&#x1F4BE;</span>
+            <span>Importar / Exportar</span>
+          </button>
+          <button class="settings-item" id="btn-reset-open">
+            <span>&#x1F504;</span>
+            <span>Restablecer horario</span>
+          </button>
+          <button class="settings-item" id="btn-purge-open" style="color: var(--danger);">
+            <span>&#x1F5D1;&#xFE0F;</span>
+            <span>Borrar todo</span>
+          </button>
+        </div>
+      </div>
       <div class="sidebar-credit">
         <div class="brand-badge-row" style="margin-top: 0; justify-content: center;">
           <span class="version-badge">v5.2.1</span>
@@ -72,26 +97,26 @@
           <span class="nav-icon" id="theme-icon">☀️</span>
           <span id="theme-text">Modo Claro</span>
         </button>
-        <div class="settings-wrapper" id="header-settings-wrapper">
-          <button class="btn-outline" id="btn-settings-toggle" title="Configuración">
+        <!-- Mobile-only settings button (visible ≤900px) -->
+        <div class="settings-wrapper mobile-only" id="mobile-settings-wrapper">
+          <button class="btn-outline" id="btn-mobile-settings-toggle" title="Configuración">
             <span class="nav-icon">&#x2699;&#xFE0F;</span>
-            <span class="settings-text">Configuraci&#xF3;n</span>
-            <span class="dropdown-arrow" id="settings-arrow">&#x25BE;</span>
+            <span class="dropdown-arrow" id="mobile-settings-arrow">&#x25BE;</span>
           </button>
-          <div class="settings-dropdown" id="settings-dropdown">
-            <button class="settings-item" id="btn-print-week" title="Imprimir vista actual o guardar como PDF">
+          <div class="settings-dropdown" id="mobile-settings-dropdown">
+            <button class="settings-item" id="btn-mobile-print-week" title="Imprimir vista actual o guardar como PDF">
               <span>&#x1F5A8;&#xFE0F;</span>
               <span>Imprimir / PDF</span>
             </button>
-            <button class="settings-item" id="btn-backup-open">
+            <button class="settings-item" id="btn-mobile-backup-open">
               <span>&#x1F4BE;</span>
               <span>Importar / Exportar</span>
             </button>
-            <button class="settings-item" id="btn-reset-open">
+            <button class="settings-item" id="btn-mobile-reset-open">
               <span>&#x1F504;</span>
               <span>Restablecer horario</span>
             </button>
-            <button class="settings-item" id="btn-purge-open" style="color: var(--danger);">
+            <button class="settings-item" id="btn-mobile-purge-open" style="color: var(--danger);">
               <span>&#x1F5D1;&#xFE0F;</span>
               <span>Borrar todo</span>
             </button>
