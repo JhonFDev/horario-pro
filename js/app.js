@@ -785,6 +785,7 @@
     };
 
     qs('#btn-purge-open').addEventListener('click', openPurgeModal);
+    qs('#btn-mobile-purge-open').addEventListener('click', openPurgeModal);
     qs('#btn-close-purge').addEventListener('click', closePurgeModal);
     qs('#btn-cancel-purge').addEventListener('click', closePurgeModal);
 
@@ -2238,7 +2239,41 @@ document.addEventListener('click', (e) => {
   }
 });
 
+// Mobile settings dropdown
+const mobileSettingsWrapper = qs('#mobile-settings-wrapper');
+const mobileSettingsDropdown = qs('#mobile-settings-dropdown');
+const mobileSettingsToggle = qs('#btn-mobile-settings-toggle');
+
+const toggleMobileSettingsDropdown = (e) => {
+  e.stopPropagation();
+  mobileSettingsWrapper.classList.toggle('active');
+};
+
+const closeMobileSettingsDropdown = () => {
+  if (mobileSettingsWrapper) mobileSettingsWrapper.classList.remove('active');
+};
+
+if (mobileSettingsToggle) {
+  mobileSettingsToggle.addEventListener('click', toggleMobileSettingsDropdown);
+}
+
+// Cerrar dropdowns al hacer clic fuera (cubre ambos)
+document.addEventListener('click', (e) => {
+  if (settingsWrapper && !settingsWrapper.contains(e.target)) {
+    closeSettingsDropdown();
+  }
+  if (mobileSettingsWrapper && !mobileSettingsWrapper.contains(e.target)) {
+    closeMobileSettingsDropdown();
+  }
+});
+
 qs('#btn-print-week').addEventListener('click', () => {
+      renderAll();
+      setTimeout(() => {
+        window.print();
+      }, 50);
+    });
+    qs('#btn-mobile-print-week').addEventListener('click', () => {
       renderAll();
       setTimeout(() => {
         window.print();
@@ -2277,6 +2312,7 @@ qs('#btn-print-week').addEventListener('click', () => {
     const closeBackupModal = () => qs('#backup-modal').classList.remove('active');
 
     qs('#btn-backup-open').addEventListener('click', openBackupModal);
+    qs('#btn-mobile-backup-open').addEventListener('click', openBackupModal);
     qs('#btn-close-backup').addEventListener('click', closeBackupModal);
     qs('#btn-cancel-backup').addEventListener('click', closeBackupModal);
 
@@ -2346,6 +2382,17 @@ qs('#btn-print-week').addEventListener('click', () => {
 
     // Restablecer Horario
     qs('#btn-reset-open').addEventListener('click', () => {
+      openConfirm(
+        'Restablecer a valores iniciales',
+        '¿Estás seguro de que deseas restablecer los cursos, temas de trabajo, temas sociales y bloques a la configuración de fábrica? Se perderán los cambios no guardados en un respaldo.',
+        () => {
+          appStore.loadDefaults();
+          renderAll();
+          showToast('Horario restablecido a la configuración inicial.');
+        }
+      );
+    });
+    qs('#btn-mobile-reset-open').addEventListener('click', () => {
       openConfirm(
         'Restablecer a valores iniciales',
         '¿Estás seguro de que deseas restablecer los cursos, temas de trabajo, temas sociales y bloques a la configuración de fábrica? Se perderán los cambios no guardados en un respaldo.',

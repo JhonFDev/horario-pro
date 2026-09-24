@@ -456,6 +456,11 @@
       gap: 0.75rem;
     }
 
+    /* Mobile-only elements hidden on desktop */
+    .mobile-only {
+      display: none;
+    }
+
     .btn-primary {
       background-color: var(--accent);
       color: var(--accent-contrast);
@@ -1338,6 +1343,33 @@
 
       .sidebar-footer {
         display: none;
+      }
+
+      /* Mobile settings wrapper - visible only on mobile */
+      .mobile-only {
+        display: flex;
+      }
+
+      #mobile-settings-wrapper {
+        position: relative;
+      }
+
+      #mobile-settings-wrapper .settings-dropdown {
+        bottom: auto;
+        top: 100%;
+        left: auto;
+        right: 0;
+        margin-bottom: 0;
+        margin-top: 0.35rem;
+        min-width: 200px;
+      }
+
+      #mobile-settings-wrapper.active .settings-dropdown {
+        display: block;
+      }
+
+      #mobile-settings-wrapper.active .dropdown-arrow {
+        transform: rotate(180deg);
       }
 
       .filters-bar {
