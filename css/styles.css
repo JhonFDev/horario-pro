@@ -1340,12 +1340,40 @@
         display: none;
       }
 
+      /* Header settings wrapper - responsive dropdown positioning */
+      #header-settings-wrapper {
+        position: relative;
+      }
+
+      #header-settings-wrapper .settings-dropdown {
+        bottom: auto;
+        top: 100%;
+        left: auto;
+        right: 0;
+        margin-bottom: 0;
+        margin-top: 0.35rem;
+        min-width: 200px;
+      }
+
+      #header-settings-wrapper .dropdown-arrow {
+        display: inline-block;
+      }
+
       .filters-bar {
         grid-template-columns: 1fr;
       }
 
       .dashboard-sections {
         grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 520px) {
+      #header-settings-wrapper .settings-text {
+        display: none;
+      }
+      #header-settings-wrapper .btn-outline {
+        padding: 0.55rem;
       }
     }
 
