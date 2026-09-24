@@ -2,6 +2,17 @@
 
 Todas las versiones notables de este proyecto se documentan en este archivo.
 
+## [v5.2.2] — 2026-09-23
+
+### Corrección
+
+- **Acceso a configuración en modo responsive (≤900px)**: Se agrega botón de Configuración duplicado en el header principal que aparece solo en pantallas móviles/tablets.
+  - El botón original en el sidebar-footer se mantiene funcional en desktop (>900px).
+  - En móvil, el botón del sidebar se oculta y aparece uno nuevo en la esquina superior derecha del header.
+  - El dropdown se abre hacia abajo y alineado a la derecha desde el header.
+  - En pantallas muy pequeñas (<520px) se muestra solo el icono ⚙️ para ahorrar espacio.
+  - Todas las opciones (Imprimir/PDF, Importar/Exportar, Restablecer, Borrar todo) accesibles en ambos breakpoints.
+
 ## [v5.2.1] — 2026-09-19
 
 ### Nueva característica
